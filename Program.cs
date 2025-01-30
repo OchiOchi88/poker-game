@@ -11,6 +11,7 @@ namespace PokerGame
         static void Main(string[] args)
         {
             int[] number = new int[4];
+            int[] pair = new int[2];
             bool check = false;
             for(int i = 0; i < 4; i++)
             {
@@ -22,6 +23,70 @@ namespace PokerGame
                     i--;
                 }
             }
+            int pairkind = 0;
+            int pairrecord = 0;
+            bool iscover = false;
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = i + 1; j < 4; j++)
+                {
+                    if (number[i] == number[j])
+                    {
+                        if (i == 0)
+                        {
+                            pair[pairkind]++;
+                            pairrecord = number[i];
+                        }
+                        else
+                        {
+                            for (int k = i; k > 0; k--)
+                            {
+                                if (number[i] == number[k - 1])
+                                {
+                                    iscover = true;
+                                }
+                            }
+                            if (iscover == false)
+                            {
+                                if (pair[pairkind] >= 1 && pairrecord != number[i])
+                                {
+                                    pairkind++;
+                                }
+                                pair[pairkind]++;
+                                pairrecord = number[i];
+                            }
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < 4; i++) {
+                Console.Write(number[i] + " ");
+            }
+            Console.WriteLine("");
+            switch(pair[0])
+            {
+                case 0:
+                    Console.WriteLine("ノーペア...");
+                    break;
+                case 1:
+                    if (pair[1] == 1)
+                    {
+                        Console.WriteLine("ツーペア！");
+                    }
+                    else
+                    {
+                        Console.WriteLine("ワンペア！！");
+                    }
+                    break;
+                case 2:
+                    Console.WriteLine("スリーカード！！スゴい！！");
+                    break;
+                case 3:
+                    Console.WriteLine("フォーカード！！ヤバすぎ！！！");
+                    break;
+            }
+
+            Console.ReadLine();
         }
     }
 }
