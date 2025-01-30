@@ -59,6 +59,8 @@ namespace PokerGame
                     }
                 }
             }
+            Console.WriteLine("あなたのそろえた役は...!");
+            Console.ReadLine();
             for (int i = 0; i < 4; i++) {
                 Console.Write(number[i] + " ");
             }
