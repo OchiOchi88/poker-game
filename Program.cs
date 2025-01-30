@@ -13,14 +13,14 @@ namespace PokerGame
             bool playing = true;
             while (playing)
             {
-                int[] number = new int[4];
+                int[] number = new int[5];
                 int[] pair = new int[2];
                 bool check = false;
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 5; i++)
                 {
-                    Console.WriteLine($"{i + 1}つめの数字を入力してください。(1～4): ");
+                    Console.WriteLine($"{i + 1}つめの数字を入力してください。(1～13): ");
                     check = int.TryParse(Console.ReadLine(), out number[i]);
-                    if (!check || number[i] > 4 || number[i] < 1)
+                    if (!check || number[i] > 13 || number[i] < 1)
                     {
                         Console.WriteLine("その入力は無効です");
                         i--;
@@ -29,9 +29,10 @@ namespace PokerGame
                 int pairkind = 0;
                 int pairrecord = 0;
                 bool iscover = false;
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 4; i++)
                 {
-                    for (int j = i + 1; j < 4; j++)
+                    iscover = false;
+                    for (int j = i + 1; j < 5; j++)
                     {
                         if (number[i] == number[j])
                         {
@@ -64,31 +65,107 @@ namespace PokerGame
                 }
                 Console.WriteLine("あなたのそろえた役は...!");
                 Console.ReadLine();
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 5; i++)
                 {
-                    Console.Write(number[i] + " ");
+                    switch (number[i])
+                    {
+                        case 1:
+                            Console.Write("A ");
+                            break;
+                        case 11:
+                            Console.Write("J ");
+                            break;
+                        case 12:
+                            Console.Write("Q ");
+                            break;
+                        case 13:
+                            Console.Write("K ");
+                            break;
+                        default:
+                            Console.Write(number[i] + " ");
+                            break;
+                    }
+
                 }
                 Console.WriteLine("");
                 switch (pair[0])
                 {
                     case 0:
-                        Console.WriteLine("ノーペア...");
-                        break;
-                    case 1:
-                        if (pair[1] == 1)
+                        int minnumber = 15;
+                        int straightCard = 0;
+                        bool ace = false;
+                        bool royal = false;
+                        for (int i = 0; i < 5; i++)
                         {
-                            Console.WriteLine("ツーペア！");
+                            if (minnumber >= number[i])
+                            {
+                                minnumber = number[i];
+                            }
+                            if (minnumber == 1)
+                            {
+                                ace = true;
+                            }
+                        }
+                        int straight = minnumber;
+                        for (int i = 0; i < 4; i++)
+                        {
+                            for (int j = 0; j < 5; j++)
+                            {
+                                if (straight + 1 == number[j])
+                                {
+                                    straight = number[j];
+                                    straightCard++;
+                                }else if(ace == true && number[j] == 10)
+                                {
+                                    ace = false;
+                                    royal = true;
+                                    straight = number[j];
+                                    straightCard++;
+                                }
+                            }
+                        }
+                        if (straightCard == 4)
+                        {
+                            if (royal)
+                            {
+                                Console.WriteLine("ロイヤルストレート！！！ヤバすぎ！！！");
+                            }
+                            else
+                            {
+                                Console.WriteLine("ストレート！！！スゴイ！！");
+                            }
                         }
                         else
                         {
-                            Console.WriteLine("ワンペア！！");
+                            Console.WriteLine("ノーペア...");
+                        }
+                        break;
+                    case 1:
+                        switch (pair[1])
+                        {
+                            case 1:
+                            Console.WriteLine("ツーペア！");
+                                break;
+                            case 2:
+                                Console.WriteLine("フルハウス！！！");
+                                break;
+                            default :
+                        Console.WriteLine("ワンペア！！");
+                                break;
                         }
                         break;
                     case 2:
-                        Console.WriteLine("スリーカード！！スゴい！！");
+                        if (pair[1] >= 1)
+                        {
+                            Console.WriteLine("フルハウス！！！");
+                        }
+                        else
+                        {
+                            Console.WriteLine("スリーカード！！スゴい！！");
+                        }
                         break;
                     case 3:
-                        Console.WriteLine("フォーカード！！ヤバすぎ！！！");
+                        Console.WriteLine("フォーオブカインド！！ヤバすぎ！！！");
                         break;
                 }
                 Console.ReadLine();
